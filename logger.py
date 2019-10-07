@@ -1,18 +1,12 @@
 class Logger(object):
     ''' Utility class responsible for logging all interactions during the simulation. '''
-    # TODO: Write a test suite for this class to make sure each method is working
-    # as expected.
-
-    # PROTIP: Write your tests before you solve each function, that way you can
-    # test them one by one as you write your class.
 
     def __init__(self, file_name):
         # TODO:  Finish this initialization method. The file_name passed should be the
         # full file name of the file that the logs will be written to.
-        self.file_name = None
+        self.file_name = file_name
 
-    def write_metadata(self, pop_size, vacc_percentage, virus_name, mortality_rate,
-                       basic_repro_num):
+    def write_metadata(self, pop_size, vacc_percentage, virus_name, mortality_rate, basic_repro_num):
         '''
         The simulation class should use this method immediately to log the specific
         parameters of the simulation as the first line of the file.
@@ -23,10 +17,10 @@ class Logger(object):
         # the 'a' mode to append a new log to the end, since 'w' overwrites the file.
         # NOTE: Make sure to end every line with a '/n' character to ensure that each
         # event logged ends up on a separate line!
-        pass
+        with open(self.file_name, 'w') as log_file:
+            log_file.write(f"{pop_size}\t{vacc_percentage}\t{virus_name}\t{mortality_rate}\t{basic_repro_num}\n")
 
-    def log_interaction(self, person, random_person, random_person_sick=None,
-                        random_person_vacc=None, did_infect=None):
+    def log_interaction(self, person, random_person, random_person_sick=None, random_person_vacc=None, did_infect=None):
         '''
         The Simulation object should use this method to log every interaction
         a sick person has during each time step.
@@ -73,3 +67,34 @@ class Logger(object):
         # new one begins.
         # NOTE: Here is an opportunity for a stretch challenge!
         pass
+
+
+# TODO: Write a test suite for this class to make sure each method is working
+# as expected.
+# PROTIP: Write your tests before you solve each function, that way you can
+# test them one by one as you write your class.
+
+def test_logger_instantiation():
+    pass
+
+def test_write_metadata():
+    data = Logger('logger.txt')
+    data.write_metadata(1000, 0.5, 'measles', 0.2, 0.8)
+
+def test_log_interaction():
+    pass
+
+def test_log_infection_survival():
+    pass
+
+def test_log_time_step():
+    pass
+
+
+
+
+if __name__ == '__main__':
+    test_write_metadata()
+
+
+
