@@ -29,15 +29,15 @@ class Simulation(object):
         All arguments will be passed as command-line arguments when the file is run.
         HINT: Look in the if __name__ == "__main__" function at the bottom.
         '''
-        # TODO: Create a Logger object and bind it to self.logger.
-        # Remember to call the appropriate logger method in the corresponding parts of the simulation.
-        # TODO: Call self._create_population() and pass in the correct parameters.
-        # Store the array that this method will return in the self.population attribute.
+        # √ TODO: Create a Logger object and bind it to self.logger.
+        # √ Remember to call the appropriate logger method in the corresponding parts of the simulation.
+        # √ TODO: Call self._create_population() and pass in the correct parameters.
+        # √ Store the array that this method will return in the self.population attribute.
         # TODO: Store each newly infected person's ID in newly_infected attribute.
         # At the end of each time step, call self._infect_newly_infected()
         # and then reset .newly_infected back to an empty list.
-        self.logger = None
-        self.population = [] # List of Person objects
+        self.logger = Logger(file_name)
+        self.population = []# List of Person objects
         self.pop_size = pop_size # Int
         self.next_person_id = 0 # Int
         self.virus = virus # Virus object
@@ -51,10 +51,8 @@ class Simulation(object):
         self.newly_infected = []
 
 
-        #SOLVING TODO
-        logger = self.logger
         self.population = self._create_population(initial_infected)
-        self.newly
+
 
     def _create_population(self, initial_infected):
         '''This method will create the initial population.
