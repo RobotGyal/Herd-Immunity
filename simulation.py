@@ -70,7 +70,7 @@ class Simulation(object):
         # Use the attributes created in the init method to create a population that has
         # the correct intial vaccination percentage and initial infected.
         pass        
-        return #array of objects
+        return people
 
     def _simulation_should_continue(self):
         ''' The simulation should only end if the entire population is dead
