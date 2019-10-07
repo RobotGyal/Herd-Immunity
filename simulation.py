@@ -8,7 +8,7 @@ from virus import Virus
 class Simulation(object):
     ''' Main class that will run the herd immunity simulation program.
     Expects initialization parameters passed as command line arguments when file is run.
-
+ 
     Simulates the spread of a virus through a given population.  The percentage of the
     population that are vaccinated, the size of the population, and the amount of initially
     infected people in a population are all variables that can be set when the program is run.
@@ -49,6 +49,12 @@ class Simulation(object):
         self.file_name = "{}_simulation_pop_{}_vp_{}_infected_{}.txt".format(
             virus_name, population_size, vacc_percentage, initial_infected)
         self.newly_infected = []
+
+
+        #SOLVING TODO
+        logger = self.logger
+        self.population = self._create_population(initial_infected)
+        self.newly
 
     def _create_population(self, initial_infected):
         '''This method will create the initial population.
@@ -97,8 +103,8 @@ class Simulation(object):
         while should_continue:
         # TODO: for every iteration of this loop, call self.time_step() to compute another
         # round of this simulation.
-        print('The simulation has ended after {time_step_counter} turns.'.format(time_step_counter))
-        pass
+            print('The simulation has ended after {time_step_counter} turns.'.format(time_step_counter))
+            pass
 
     def time_step(self):
         ''' This method should contain all the logic for computing one time step
