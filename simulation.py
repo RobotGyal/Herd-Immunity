@@ -29,13 +29,7 @@ class Simulation(object):
         All arguments will be passed as command-line arguments when the file is run.
         HINT: Look in the if __name__ == "__main__" function at the bottom.
         '''
-        # √ TODO: Create a Logger object and bind it to self.logger.
-        # √ Remember to call the appropriate logger method in the corresponding parts of the simulation.
-        # √ TODO: Call self._create_population() and pass in the correct parameters.
-        # √ Store the array that this method will return in the self.population attribute.
-        # TODO: Store each newly infected person's ID in newly_infected attribute.
-        # At the end of each time step, call self._infect_newly_infected()
-        # and then reset .newly_infected back to an empty list.
+
         self.population = []# List of Person objects
         self.pop_size = pop_size # Int
         self.next_person_id = 0 # Int
@@ -64,6 +58,9 @@ class Simulation(object):
                 list: A list of Person objects.
 
         '''
+
+        people = []
+        self.initial_infected = initial_infected
         # TODO: Finish this method!  This method should be called when the simulation
         # begins, to create the population that will be used. This method should return
         # an array filled with Person objects that matches the specifications of the
@@ -72,7 +69,8 @@ class Simulation(object):
 
         # Use the attributes created in the init method to create a population that has
         # the correct intial vaccination percentage and initial infected.
-        pass
+        pass        
+        return #array of objects
 
     def _simulation_should_continue(self):
         ''' The simulation should only end if the entire population is dead
@@ -82,7 +80,7 @@ class Simulation(object):
                 bool: True for simulation should continue, False if it should end.
         '''
         # TODO: Complete this helper method.  Returns a Boolean.
-        pass
+
 
     def run(self):
         ''' This method should run the simulation until all requirements for ending
@@ -158,9 +156,8 @@ class Simulation(object):
 if __name__ == "__main__":
     params = sys.argv[1:]
     virus_name = str(params[0])
-    repro_num = float(params[1])
+    repro_rate = float(params[1])
     mortality_rate = float(params[2])
-
     pop_size = int(params[3])
     vacc_percentage = float(params[4])
 
@@ -169,7 +166,11 @@ if __name__ == "__main__":
     else:
         initial_infected = 1
 
-    virus = Virus(name, repro_rate, mortality_rate)
-    sim = Simulation(pop_size, vacc_percentage, initial_infected, virus)
+    virus = Virus(virus_name, repro_rate, mortality_rate)
+    sim = Simulation(pop_size, vacc_percentage, virus, initial_infected)
 
     sim.run()
+
+#Terminal Inout order
+    # Virus Name, Reproduction Rate, Mortality Rate, Population Size, Vaccincatin Percentage, Initial Infected
+    # EXAMPLE:  python3 simulation.py Ebola 0.25 0.70 100000 0.90 10           
