@@ -3,6 +3,7 @@ random.seed(42)
 from person import Person
 from logger import Logger
 from virus import Virus
+import os
 
 
 class Simulation(object):
@@ -46,6 +47,7 @@ class Simulation(object):
 
         self.logger = Logger(self.file_name)
         self.population = self._create_population(initial_infected)
+        self.simulation = Simulation(pop_size, vacc_percentage, virus, initial_infected)
 
     # need logic
     def _create_population(self, initial_infected):
@@ -107,6 +109,7 @@ class Simulation(object):
             print('The simulation has ended after {time_step_counter} turns.'.format(time_step_counter))
             pass
 
+    # √ finished todos - needs debug/test
     def time_step(self):
         ''' This method should contain all the logic for computing one time step
         in the simulation.
@@ -120,9 +123,15 @@ class Simulation(object):
                 increment interaction counter by 1.
             '''
         # TODO: Finish this method.
-        pass
+        iteration = None
+        while iteration <= 100:
+            if person.is_alive == False or random_person.is_alive == False:
+                next_person_id = randint(0,1)
+            else:
+                self.simulation.interaction(person, random_person)
+                iteration +=1
     
-    # √ finished todos
+    # √ finished todos - needs debug/test
     def interaction(self, person, random_person):
         '''This method should be called any time two living people are selected for an
         interaction. It assumes that only living people are passed in as parameters.
@@ -156,7 +165,7 @@ class Simulation(object):
             if rand_num <= repro_rate:
                 self.newly_infected.append(random_person._id)
     
-    #finished
+    # √ finished todos - needs debug/test
     def _infect_newly_infected(self):
         ''' This method should iterate through the list of ._id stored in self.newly_infected
         and update each Person object with the disease. '''
