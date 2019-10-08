@@ -121,7 +121,8 @@ class Simulation(object):
             '''
         # TODO: Finish this method.
         pass
-
+    
+    # √ finished todos
     def interaction(self, person, random_person):
         '''This method should be called any time two living people are selected for an
         interaction. It assumes that only living people are passed in as parameters.
@@ -134,7 +135,6 @@ class Simulation(object):
         # in as params
         assert person.is_alive == True
         assert random_person.is_alive == True
-
         # TODO: Finish this method.
         #  The possible cases you'll need to cover are listed below:
             # random_person is vaccinated:
@@ -146,8 +146,15 @@ class Simulation(object):
             #     than repro_rate, random_person's ID should be appended to
             #     Simulation object's newly_infected array, so that their .infected
             #     attribute can be changed to True at the end of the time step.
-        # TODO: Call slogger method during this method.
-        pass
+        # TODO: Call logger method during this method.
+        if random_person.is_vaccinated == True:
+            continue
+        elif random_person.is_infected == True:
+            continue
+        elif random_person.is_vaccinated and random_person.is_vaccinated == False:
+            rand_num = random.randint(0,1)
+            if rand_num <= repro_rate:
+                self.newly_infected.append(random_person._id)
     
     #finished
     def _infect_newly_infected(self):
