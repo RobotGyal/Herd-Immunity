@@ -62,16 +62,14 @@ class Simulation(object):
         '''
 
         population = []
-        self.initial_infected = initial_infected
-        # TODO: Finish this method!  This method should be called when the simulation
-        # begins, to create the population that will be used. This method should return
-        # an array filled with Person objects that matches the specifications of the
-        # simulation (correct number of people in the population, correct percentage of
-        # people vaccinated, correct number of initially infected people).
+        infected_amount = 0
+        new_id = None
 
-        # Use the attributes created in the init method to create a population that has
-        # the correct intial vaccination percentage and initial infected.
-        pass        
+        while len(population) != pop_size:
+            if self.initial_infected != infected_amount:
+                population = Person(new_id, is_vaccinated = False, infection = self.virus)
+            else:
+                pass      
         return population
 
     # √ but needs work
@@ -93,19 +91,11 @@ class Simulation(object):
         ''' This method should run the simulation until all requirements for ending
         the simulation are met.
         '''
-        # TODO: Finish this method.  To simplify the logic here, use the helper method
-        # _simulation_should_continue() to tell us whether or not we should continue
-        # the simulation and run at least 1 more time_step.
-
-        # TODO: Keep track of the number of time steps that have passed.
-        # HINT: You may want to call the logger's log_time_step() method at the end of each time step.
-        # TODO: Set this variable using a helper
+        
         time_step_counter = 0
         should_continue = None
 
         while should_continue:
-        # TODO: for every iteration of this loop, call self.time_step() to compute another
-        # round of this simulation.
             print('The simulation has ended after {time_step_counter} turns.'.format(time_step_counter))
             pass
 
@@ -122,7 +112,6 @@ class Simulation(object):
             3. Otherwise call simulation.interaction(person, random_person) and
                 increment interaction counter by 1.
             '''
-        # TODO: Finish this method.
         iteration = None
         while iteration <= 100:
             if person.is_alive == False or random_person.is_alive == False:
@@ -144,18 +133,7 @@ class Simulation(object):
         # in as params
         assert person.is_alive == True
         assert random_person.is_alive == True
-        # TODO: Finish this method.
-        #  The possible cases you'll need to cover are listed below:
-            # random_person is vaccinated:
-            #     nothing happens to random person.
-            # random_person is already infected:
-            #     nothing happens to random person.
-            # random_person is healthy, but unvaccinated:
-            #     generate a random number between 0 and 1.  If that number is smaller
-            #     than repro_rate, random_person's ID should be appended to
-            #     Simulation object's newly_infected array, so that their .infected
-            #     attribute can be changed to True at the end of the time step.
-        # TODO: Call logger method during this method.
+        
         if random_person.is_vaccinated == True:
             continue
         elif random_person.is_infected == True:
