@@ -2,7 +2,5 @@ TEST git pushing via terminal and ssh
 
 
 
-teeeeeeees
 
-
-Aleia edit
+success & spaghetti
