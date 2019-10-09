@@ -36,14 +36,14 @@ class Simulation(object):
         self.next_person_id = 0 # Int
         self.virus = virus # Virus object
         self.initial_infected = initial_infected # Int
-        self.total_infected = 0 # Int
-        self.current_infected = 0 # Int
+        #self.total_infected = 0 # Int
+        self.current_infected = 0 # Int    counts number of infected
         self.vacc_percentage = vacc_percentage # float between 0 and 1
         self.total_dead = 0 # Int
         self.file_name = "{}_simulation_pop_{}_vp_{}_infected_{}.txt".format(
             virus_name, pop_size, vacc_percentage, initial_infected)
-        self.newly_infected = []
-
+        self.newly_infected = []   #stores infected people
+        
 
         self.logger = Logger(self.file_name)
         self.population = self._create_population(initial_infected)
@@ -62,14 +62,14 @@ class Simulation(object):
         '''
 
         population = []
-        infected = 0
+        self.current_infected = 0
         vaccinated = 0
         id = 0
 
         while len(population) != pop_size:
-            if self.initial_infected != infected:
+            if self.initial_infected != self.current_infected:
                 population = Person(id, is_vaccinated = False, infection = virus) #infected
-                infected+=1
+                self.current_infected+=1
                 id+=1
             else:
                 if random.random() < self.vacc_percentage:
@@ -78,11 +78,11 @@ class Simulation(object):
                     id+=1
                 else:
                     population.append(Person(id, is_vaccinated=False)) #infected / sick
-                    infected+=1
+                    self.current_infected+=1
                     id+=1
         return population
 
-    # √ but needs work
+    # DONE
     def _simulation_should_continue(self):
         ''' The simulation should only end if the entire population is dead
         or everyone is vaccinated.
@@ -90,23 +90,26 @@ class Simulation(object):
             Returns:
                 bool: True for simulation should continue, False if it should end.
         '''
-        for person in self.pop_size:
-            if person.is_infected or len(self.total_dead) == len(self.pop_size):
-                return True
-            else:
-                return False
+        if self.current_infected == 0 or vacc_percentage < 1:
+            return True
+        else:
+            return False
 
-
+    # DONE
     def run(self):
         ''' This method should run the simulation until all requirements for ending
         the simulation are met.
         '''
         
-        time_step_counter = 0
-        should_continue = None
+        time_step_number = 0
+        should_continue = self._simulation_should_continue()
 
         while should_continue:
-            print('The simulation has ended after {time_step_counter} turns.'.format(time_step_counter))
+            self.time_step()
+            should_continue = self._simulation_should_continue()
+            time_step_number +=1
+            self.logger.log_time_step(time_step_number)
+            print('The simulation has ended after {time_step_number} turns.'.format(time_step_number))
             pass
 
     # √ finished todos - needs debug/test
@@ -122,7 +125,7 @@ class Simulation(object):
             3. Otherwise call simulation.interaction(person, random_person) and
                 increment interaction counter by 1.
             '''
-        iteration = None
+        iteration = 0
         while iteration <= 100:
             if person.is_alive == False or random_person.is_alive == False:
                 next_person_id = randint(0,1)
