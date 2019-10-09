@@ -50,7 +50,7 @@ class Simulation(object):
         self.simulation = Simulation(pop_size, vacc_percentage, virus, initial_infected)
 
     # DONE
-    def _create_population(self, initial_infected, is_vaccinated):
+    def _create_population(self, initial_infected):
         '''This method will create the initial population.
             Args:
                 initial_infected (int): The number of infected people that the simulation
@@ -72,7 +72,7 @@ class Simulation(object):
                 infected+=1
                 id+=1
             else:
-                if is_vaccinated == random.random() < self.vacc_percentage:
+                if random.random() < self.vacc_percentage:
                     population.append(Person(id, is_vaccinated=True)) #vaccinated / unaffected
                     vaccinated+=1
                     id+=1
