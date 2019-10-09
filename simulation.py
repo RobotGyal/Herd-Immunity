@@ -112,7 +112,7 @@ class Simulation(object):
             print('The simulation has ended after {time_step_number} turns.'.format(time_step_number))
             pass
 
-    # √ finished todos - needs debug/test
+    # DONE
     def time_step(self):
         ''' This method should contain all the logic for computing one time step
         in the simulation.
@@ -125,13 +125,19 @@ class Simulation(object):
             3. Otherwise call simulation.interaction(person, random_person) and
                 increment interaction counter by 1.
             '''
-        iteration = 0
-        while iteration <= 100:
-            if person.is_alive == False or random_person.is_alive == False:
-                next_person_id = randint(0,1)
-            else:
-                self.simulation.interaction(person, random_person)
-                iteration +=1
+        interaction = 0
+        while interaction < 100:
+            for person in self.population:
+                if person.is_alive == True and person.is_infected == True:
+                    random_person = random.choice(self.population)
+                    interacting=True
+                    while interacting:
+                        self.simulation.interaction(person, random_person)
+                        interaction+=1
+                        interacting=False
+                    random_person = random.choice(self.population)
+        
+        self._infect_newly_infected()
     
     # √ finished todos - needs debug/test
     def interaction(self, person, random_person):
