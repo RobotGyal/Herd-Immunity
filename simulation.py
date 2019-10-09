@@ -139,7 +139,7 @@ class Simulation(object):
         
         self._infect_newly_infected()
     
-    # √ finished todos - needs debug/test
+    # DONE - needs logger edits
     def interaction(self, person, random_person):
         '''This method should be called any time two living people are selected for an
         interaction. It assumes that only living people are passed in as parameters.
@@ -153,16 +153,20 @@ class Simulation(object):
         assert person.is_alive == True
         assert random_person.is_alive == True
         
+        #need to edit write to log
         if random_person.is_vaccinated == True:
-            continue
+            self.logger.log_interaction(self, person, random_person, random_person_sick=None, random_person_vacc=None, did_infect=None)
+            return None
         elif random_person.is_infected == True:
-            continue
-        elif random_person.is_vaccinated and random_person.is_vaccinated == False:
+            self.logger.log_interaction(self, person, random_person, random_person_sick=None, random_person_vacc=None, did_infect=None)
+            return None
+        elif random_person.is_infected and random_person.is_vaccinated == False:
             rand_num = random.randint(0,1)
             if rand_num <= repro_rate:
                 self.newly_infected.append(random_person._id)
+                self.logger.log_interaction(self, person, random_person, random_person_sick=None, random_person_vacc=None, did_infect=None)
     
-    # √ finished todos - needs debug/test
+    # DONE
     def _infect_newly_infected(self):
         ''' This method should iterate through the list of ._id stored in self.newly_infected
         and update each Person object with the disease. '''
