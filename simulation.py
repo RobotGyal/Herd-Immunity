@@ -49,8 +49,8 @@ class Simulation(object):
         self.population = self._create_population(initial_infected)
         self.simulation = Simulation(pop_size, vacc_percentage, virus, initial_infected)
 
-    # need logic
-    def _create_population(self, initial_infected):
+    # DONE
+    def _create_population(self, initial_infected, is_vaccinated):
         '''This method will create the initial population.
             Args:
                 initial_infected (int): The number of infected people that the simulation
@@ -62,14 +62,24 @@ class Simulation(object):
         '''
 
         population = []
-        infected_amount = 0
-        new_id = None
+        infected = 0
+        vaccinated = 0
+        id = 0
 
         while len(population) != pop_size:
-            if self.initial_infected != infected_amount:
-                population = Person(new_id, is_vaccinated = False, infection = self.virus)
+            if self.initial_infected != infected:
+                population = Person(id, is_vaccinated = False, infection = virus) #infected
+                infected+=1
+                id+=1
             else:
-                pass      
+                if is_vaccinated == random.random() < self.vacc_percentage:
+                    population.append(Person(id, is_vaccinated=True)) #vaccinated / unaffected
+                    vaccinated+=1
+                    id+=1
+                else:
+                    population.append(Person(id, is_vaccinated=False)) #infected / sick
+                    infected+=1
+                    id+=1
         return population
 
     # √ but needs work
@@ -165,10 +175,10 @@ if __name__ == "__main__":
         initial_infected = 1
 
     virus = Virus(virus_name, repro_rate, mortality_rate)
-    sim = Simulation(pop_size, vacc_percentage, virus, initial_infected)
+    sim = Simulation(pop_size, vacc_percentage,  initial_infected)
 
     sim.run()
 
 #Terminal Inout order
-    # Virus Name, Reproduction Rate, Mortality Rate, Population Size, Vaccincatin Percentage, Initial Infected
+    # Virus Name, Reproduction Rate, Mortality Rate, Population Size, Vaccincation Percentage, Initial Infected
     # EXAMPLE:  python3 simulation.py Ebola 0.25 0.70 100000 0.90 10           
