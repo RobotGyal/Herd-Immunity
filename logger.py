@@ -1,5 +1,6 @@
 from person import Person
 from virus import Virus
+from simulation import Simulation
 import os.path
 
 class Logger(object):
@@ -89,7 +90,7 @@ def test_logger_instantiation():
     assert data.file_name == 'logger.txt'
 
 def test_write_metadata():
-    sim = Simulation(100000, 0.9, 'Ebola', 0.7, 0.25)
+    sim = Simulation(100000, 0.9, virus, 'Ebola')
 
     assert os.path.isfile('logger.txt') is True
     assert sim.pop_size == 100000
@@ -99,7 +100,7 @@ def test_write_metadata():
     assert sim.basic_repro_num == 0.25
 
 def test_log_interaction():
-
+    pass
 
 def test_log_infection_survival():
     pass
@@ -107,6 +108,7 @@ def test_log_infection_survival():
 def test_log_time_step():
     # data = Logger('logger.txt')
     # data.log_time_step(12, 35, 67, 234, 325)
+    pass
 
 
 
