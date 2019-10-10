@@ -36,14 +36,14 @@ class Simulation(object):
         self.next_person_id = 0 # Int
         self.virus = virus # Virus object
         self.initial_infected = initial_infected # Int
-        self.total_infected = 0 # Int
-        self.current_infected = 0 # Int
+        #self.total_infected = 0 # Int
+        self.current_infected = 0 # Int    counts number of infected
         self.vacc_percentage = vacc_percentage # float between 0 and 1
         self.total_dead = 0 # Int
         self.file_name = "{}_simulation_pop_{}_vp_{}_infected_{}.txt".format(
             virus_name, pop_size, vacc_percentage, initial_infected)
-        self.newly_infected = []
-
+        self.newly_infected = []   #stores infected people
+        
 
         self.logger = Logger(self.file_name)
         self.population = self._create_population(initial_infected)
@@ -62,14 +62,14 @@ class Simulation(object):
         '''
 
         population = []
-        infected = 0
+        self.current_infected = 0
         vaccinated = 0
         id = 0
 
         while len(population) != pop_size:
-            if self.initial_infected != infected:
+            if self.initial_infected != self.current_infected:
                 population = Person(id, is_vaccinated = False, infection = virus) #infected
-                infected+=1
+                self.current_infected+=1
                 id+=1
             else:
                 if random.random() < self.vacc_percentage:
@@ -78,11 +78,11 @@ class Simulation(object):
                     id+=1
                 else:
                     population.append(Person(id, is_vaccinated=False)) #infected / sick
-                    infected+=1
+                    self.current_infected+=1
                     id+=1
         return population
 
-    # √ but needs work
+    # DONE
     def _simulation_should_continue(self):
         ''' The simulation should only end if the entire population is dead
         or everyone is vaccinated.
@@ -90,26 +90,29 @@ class Simulation(object):
             Returns:
                 bool: True for simulation should continue, False if it should end.
         '''
-        for person in self.pop_size:
-            if person.is_infected or len(self.total_dead) == len(self.pop_size):
-                return True
-            else:
-                return False
+        if self.current_infected == 0 or vacc_percentage < 1:
+            return True
+        else:
+            return False
 
-
+    # DONE
     def run(self):
         ''' This method should run the simulation until all requirements for ending
         the simulation are met.
         '''
         
-        time_step_counter = 0
-        should_continue = None
+        time_step_number = 0
+        should_continue = self._simulation_should_continue()
 
         while should_continue:
-            print('The simulation has ended after {time_step_counter} turns.'.format(time_step_counter))
+            self.time_step()
+            should_continue = self._simulation_should_continue()
+            time_step_number +=1
+            self.logger.log_time_step(time_step_number)
+            print('The simulation has ended after {time_step_number} turns.'.format(time_step_number))
             pass
 
-    # √ finished todos - needs debug/test
+    # DONE
     def time_step(self):
         ''' This method should contain all the logic for computing one time step
         in the simulation.
@@ -122,15 +125,21 @@ class Simulation(object):
             3. Otherwise call simulation.interaction(person, random_person) and
                 increment interaction counter by 1.
             '''
-        iteration = None
-        while iteration <= 100:
-            if person.is_alive == False or random_person.is_alive == False:
-                next_person_id = randint(0,1)
-            else:
-                self.simulation.interaction(person, random_person)
-                iteration +=1
+        interaction = 0
+        while interaction < 100:
+            for person in self.population:
+                if person.is_alive == True and person.is_infected == True:
+                    random_person = random.choice(self.population)
+                    interacting=True
+                    while interacting:
+                        self.simulation.interaction(person, random_person)
+                        interaction+=1
+                        interacting=False
+                    random_person = random.choice(self.population)
+        
+        self._infect_newly_infected()
     
-    # √ finished todos - needs debug/test
+    # DONE - needs logger edits
     def interaction(self, person, random_person):
         '''This method should be called any time two living people are selected for an
         interaction. It assumes that only living people are passed in as parameters.
@@ -144,16 +153,20 @@ class Simulation(object):
         assert person.is_alive == True
         assert random_person.is_alive == True
         
+        #need to edit write to log
         if random_person.is_vaccinated == True:
-            continue
+            self.logger.log_interaction(self, person, random_person, random_person_sick=None, random_person_vacc=None, did_infect=None)
+            return None
         elif random_person.is_infected == True:
-            continue
-        elif random_person.is_vaccinated and random_person.is_vaccinated == False:
+            self.logger.log_interaction(self, person, random_person, random_person_sick=None, random_person_vacc=None, did_infect=None)
+            return None
+        elif random_person.is_infected and random_person.is_vaccinated == False:
             rand_num = random.randint(0,1)
             if rand_num <= repro_rate:
                 self.newly_infected.append(random_person._id)
+                self.logger.log_interaction(self, person, random_person, random_person_sick=None, random_person_vacc=None, did_infect=None)
     
-    # √ finished todos - needs debug/test
+    # DONE
     def _infect_newly_infected(self):
         ''' This method should iterate through the list of ._id stored in self.newly_infected
         and update each Person object with the disease. '''
