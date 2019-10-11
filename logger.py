@@ -1,5 +1,6 @@
 from person import Person
 from virus import Virus
+from simulation import Simulation
 import os.path
 
 class Logger(object):
@@ -138,6 +139,7 @@ def test_log_infection_survival():
 
 def test_log_time_step():
     data = Logger('logger.txt')
+
 
     data.log_time_step(5, 85, 25, 1223, 656)
 
