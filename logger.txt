@@ -1,7 +1,0 @@
-
-Time step 12 ended..
-35 people were infected
-67 people died
-234 total infected
-325 total dead
-13 beginning..1 did not infect 2 — already vaccinated.1 did not infect 2 — already vaccinated.
